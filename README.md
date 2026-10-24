@@ -1,6 +1,6 @@
 # veightz/site
 
-Veight 的个人网站。目前是占位主页（`noindex`），尚未公开任何文章。线上地址：https://veightz.pages.dev
+Veight 的个人网站。目前是占位主页（`noindex`），已有白名单文章（仍保持 noindex）。线上地址：https://veightz.pages.dev
 
 ## 技术栈
 

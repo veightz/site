@@ -1,0 +1,62 @@
+---
+interface Props {
+  title: string;
+  description?: string;
+}
+const { title, description } = Astro.props;
+---
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex,nofollow" />
+    {description && <meta name="description" content={description} />}
+    <title>{title}</title>
+  </head>
+  <body>
+    <header class="site-header">
+      <a href="/" class="site-title">Veight</a>
+    </header>
+    <slot />
+  </body>
+</html>
+<style is:global>
+  :root {
+    color-scheme: light dark;
+    --bg: #fafaf9;
+    --fg: #1c1917;
+    --muted: #78716c;
+    --border: #e7e5e4;
+    --link: #1d4ed8;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #151413;
+      --fg: #f5f5f4;
+      --muted: #a8a29e;
+      --border: #292524;
+      --link: #93c5fd;
+    }
+  }
+  html, body { margin: 0; min-height: 100%; }
+  body {
+    background: var(--bg);
+    color: var(--fg);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans CJK SC", sans-serif;
+    line-height: 1.7;
+  }
+  a { color: var(--link); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  .site-header {
+    max-width: 42rem;
+    margin: 0 auto;
+    padding: 1.25rem 1.25rem 0;
+  }
+  .site-title {
+    color: var(--fg);
+    font-weight: 600;
+    letter-spacing: -.02em;
+  }
+  .site-title:hover { text-decoration: none; opacity: .8; }
+</style>
