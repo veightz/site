@@ -1,0 +1,36 @@
+---
+import Base from '../../layouts/Base.astro';
+
+const tools = [
+  {
+    href: '/tools/query/',
+    title: '查询工具',
+    summary: 'Sensebook 语境划词生词本：网页划词连同整句语境翻译、AI 释义，存进生词本。',
+  },
+];
+---
+<Base title="我的工具 · Veight" description="Veight 做的一些小工具">
+  <main>
+    <h1>我的工具</h1>
+    <p class="lead">自己做、自己在用的小工具。</p>
+    <ul class="tools">
+      {tools.map((t) => (
+        <li>
+          <a href={t.href}>{t.title}</a>
+          <p>{t.summary}</p>
+        </li>
+      ))}
+    </ul>
+  </main>
+</Base>
+<style>
+  main { max-width: 42rem; margin: 0 auto; padding: 2rem 1.25rem 3rem; }
+  h1 { margin: 0 0 .5rem; font-size: clamp(2rem, 6vw, 2.75rem); font-weight: 650; letter-spacing: -.02em; }
+  .lead { margin: 0 0 2rem; color: var(--muted); font-size: 1.1rem; }
+  .tools { list-style: none; margin: 0; padding: 0; }
+  .tools li { margin: 0 0 1.25rem; padding-bottom: 1.25rem; border-bottom: 1px solid var(--border); }
+  .tools li:last-child { border-bottom: none; }
+  .tools a { display: block; color: var(--fg); font-weight: 600; font-size: 1.1rem; line-height: 1.4; }
+  .tools a:hover { color: var(--link); }
+  .tools p { margin: .4rem 0 0; color: var(--muted); font-size: .95rem; }
+</style>

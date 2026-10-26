@@ -1,0 +1,74 @@
+---
+import Base from '../../../layouts/Base.astro';
+
+const RAW = 'https://raw.githubusercontent.com/veightz/sensebook/main/userscript/sensebook.user.js';
+const REPO = 'https://github.com/veightz/sensebook';
+
+// 构建时读取脚本头，取 @downloadURL / @version；失败则用兜底值。
+let installUrl = RAW;
+let version = '0.1.202610141420';
+try {
+  const res = await fetch(RAW);
+  if (res.ok) {
+    const head = (await res.text()).split('==/UserScript==')[0];
+    const dl = head.match(/@downloadURL\s+(\S+)/);
+    const ver = head.match(/@version\s+(\S+)/);
+    if (dl) installUrl = dl[1];
+    if (ver) version = ver[1];
+  }
+} catch {}
+---
+<Base title="查询工具 · Sensebook · Veight" description="Sensebook 语境划词生词本油猴脚本">
+  <main>
+    <p class="crumb"><a href="/tools/">我的工具</a> / 查询工具</p>
+    <h1>查询工具</h1>
+    <p class="lead">Sensebook · 语境划词生词本（Tampermonkey 油猴脚本）</p>
+
+    <p>在任意网页上划词，连同所在整句语境一起翻译，并给出 AI 释义（DeepSeek），一键存进生词本。生词本保存在本地，不登录也能用。</p>
+    <ul class="features">
+      <li>选中即自动查询</li>
+      <li>整句语境翻译 + AI 释义</li>
+      <li>本地生词本，可不登录</li>
+      <li>本地缓存、查询记录</li>
+      <li>单词朗读</li>
+    </ul>
+
+    <p class="actions">
+      <a class="btn" href={installUrl}>安装脚本</a>
+      <span class="ver">当前版本 v{version}</span>
+    </p>
+    <p class="repo">源码：<a href={REPO}>github.com/veightz/sensebook</a></p>
+
+    <h2>安装步骤</h2>
+    <ol>
+      <li>浏览器安装 <a href="https://www.tampermonkey.net/">Tampermonkey</a> 扩展。</li>
+      <li>点上面的「安装脚本」，在油猴弹出的页面里确认安装。</li>
+      <li>（可选）在脚本设置里填入 DeepSeek API Key，开启 AI 释义。</li>
+    </ol>
+
+    <h2>注意</h2>
+    <ul>
+      <li>DeepSeek API Key 只存在本机油猴存储里，不会上传。</li>
+      <li>Chrome 需在扩展管理里为 Tampermonkey 开启「允许运行用户脚本」（Allow User Scripts），否则脚本不生效。</li>
+    </ul>
+  </main>
+</Base>
+<style>
+  main { max-width: 42rem; margin: 0 auto; padding: 2rem 1.25rem 3rem; }
+  .crumb { margin: 0 0 1rem; color: var(--muted); font-size: .9rem; }
+  .crumb a { color: var(--muted); }
+  h1 { margin: 0 0 .5rem; font-size: clamp(2rem, 6vw, 2.75rem); font-weight: 650; letter-spacing: -.02em; }
+  .lead { margin: 0 0 1.5rem; color: var(--muted); font-size: 1.1rem; }
+  h2 { margin: 2rem 0 .75rem; font-size: 1rem; font-weight: 600; color: var(--muted); letter-spacing: .04em; }
+  .features { padding-left: 1.25rem; }
+  .actions { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; margin: 1.5rem 0 .5rem; }
+  .btn {
+    display: inline-block; padding: .5rem 1.1rem; border-radius: .5rem;
+    background: var(--fg); color: var(--bg); font-weight: 600;
+  }
+  .btn:hover { text-decoration: none; opacity: .85; }
+  .ver { color: var(--muted); font-size: .9rem; }
+  .repo { color: var(--muted); font-size: .95rem; margin: 0; }
+  ol, ul { padding-left: 1.25rem; }
+  li { margin: .25rem 0; }
+</style>
