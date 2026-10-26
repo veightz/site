@@ -1,0 +1,65 @@
+---
+import Base from '../../../layouts/Base.astro';
+
+const SITE = 'https://mermaid-feishu.pages.dev';
+const REPO = 'https://github.com/veightz/mermaid-feishu';
+const curl = `curl -X POST ${SITE}/api/render \\
+  -H 'Content-Type: application/json' \\
+  -d '{
+    "code": "flowchart TD\\n  A[开始] --> B{判断}\\n  B -->|是| C[完成]",
+    "format": "svg",
+    "layout": "elk",
+    "direction": "lr"
+  }' > diagram.svg`;
+---
+<Base title="Mermaid 转飞书 · Veight" description="粘贴 Mermaid，生成好看的图，一键复制进飞书">
+  <main>
+    <p class="crumb"><a href="/tools/">工具</a> / Mermaid 转飞书</p>
+    <h1>Mermaid 转飞书</h1>
+    <p class="lead">粘贴 Mermaid，生成好看的图，一键复制进飞书文档</p>
+
+    <p>把 Mermaid 源码渲染成适合飞书的图：默认 ChatGPT 风配色 + ELK 布局，走线更整齐。网页里实时预览，可以复制 PNG、SVG 或 HTML 小组件直接贴进飞书；也提供无需鉴权的 API，方便 Agent 调用。</p>
+    <ul class="features">
+      <li>多套配色：ChatGPT 风（默认）、飞书白、飞书浅灰、Notion 色块等</li>
+      <li>布局可选：默认 / ELK，支持并排对比</li>
+      <li>一键切换走向：上下（TB）/ 左右（LR）</li>
+      <li>复制 PNG（2x / 3x）、干净 SVG、HTML 小组件</li>
+      <li>预览缩放，与导出倍率分开</li>
+    </ul>
+
+    <p class="actions">
+      <a class="btn" href={SITE}>打开 Mermaid 转飞书</a>
+    </p>
+    <p class="repo">源码：<a href={REPO}>github.com/veightz/mermaid-feishu</a></p>
+
+    <h2>API</h2>
+    <p><code>POST {SITE}/api/render</code>，JSON 请求体，无需鉴权，源码上限 50KB，返回 SVG 或 HTML。</p>
+    <ul>
+      <li><code>code</code>：Mermaid 源码（必填）</li>
+      <li><code>format</code>：<code>svg</code> 或 <code>html</code></li>
+      <li><code>theme</code>：配色，默认 <code>chatgpt</code>；列表见 <a href={`${SITE}/api/themes`}>/api/themes</a></li>
+      <li><code>layout</code>：<code>elk</code> / <code>default</code> / <code>auto</code>；不填或 <code>auto</code> 跟随配色（ChatGPT 风用 ELK）</li>
+      <li><code>direction</code>：<code>tb</code> / <code>lr</code> / <code>bt</code> / <code>rl</code>；渲染前改写流程图走向，不填不改，只影响 flowchart / graph</li>
+    </ul>
+    <pre><code>{curl}</code></pre>
+    <p class="note">短源码也可以用 GET：<code>/api/render?code=…&amp;format=svg&amp;layout=elk&amp;direction=lr</code>。完整说明见 <a href={`${SITE}/SKILL.md`}>SKILL.md</a>。</p>
+  </main>
+</Base>
+<style>
+  main { max-width: 42rem; margin: 0 auto; padding: 2rem 1.25rem 3rem; }
+  .crumb { margin: 0 0 1rem; color: var(--muted); font-size: .9rem; }
+  .crumb a { color: var(--muted); }
+  h1 { margin: 0 0 .5rem; font-size: clamp(2rem, 6vw, 2.75rem); font-weight: 650; letter-spacing: -.02em; }
+  .lead { margin: 0 0 1.5rem; color: var(--muted); font-size: 1.1rem; }
+  h2 { margin: 2rem 0 .75rem; font-size: 1rem; font-weight: 600; color: var(--muted); letter-spacing: .04em; }
+  .features { padding-left: 1.25rem; }
+  .actions { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; margin: 1.5rem 0 .5rem; }
+  .btn { display: inline-block; padding: .5rem 1.1rem; border-radius: .5rem; background: var(--fg); color: var(--bg); font-weight: 600; }
+  .btn:hover { text-decoration: none; opacity: .85; }
+  .repo, .note { color: var(--muted); font-size: .95rem; margin: 0; }
+  .note { margin-top: .75rem; }
+  ol, ul { padding-left: 1.25rem; }
+  li { margin: .25rem 0; }
+  code { font-size: .9em; }
+  pre { overflow-x: auto; padding: .9rem 1rem; border: 1px solid var(--border); border-radius: .5rem; font-size: .85rem; line-height: 1.5; }
+</style>
